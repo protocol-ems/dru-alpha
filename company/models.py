@@ -17,12 +17,13 @@ class Company(models.Model):
 
 
 class User(AbstractUser):
+
+    title_choices = (('1', 'EMT'),
+                     ('2', 'Paramedic'), ('3', 'RN'), ('4', 'Admin'))
+
     company = models.ForeignKey(
         Company, related_name="users", on_delete=CASCADE, default=1)
-    isEMT = models.BooleanField(default=True)
-    isParamedic = models.BooleanField(default=False)
-    isRN = models.BooleanField(default=False)
-    isAdmin = models.BooleanField(default=False)
+    employeeType = models.CharField(max_length=20, choices=title_choices)
 
 
 class Document(models.Model):
