@@ -14,7 +14,6 @@ from pathlib import Path
 from datetime import timedelta
 from rest_framework.settings import api_settings
 import os
-
 db_password = os.environ.get('DB_PASSWORD')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -90,12 +89,12 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'protocol-alpha',
         'CLIENT': {
-            'host': db_password,
+            'host': 'mongodb+srv://admin:INlVCXrhazgeBL9m@cluster0.utmv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
         }
     }
 }
 # INlVCXrhazgeBL9m
-# 'mongodb+srv://admin:INlVCXrhazgeBL9m@cluster0.utmv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

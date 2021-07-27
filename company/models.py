@@ -23,7 +23,8 @@ class User(AbstractUser):
 
     company = models.ForeignKey(
         Company, related_name="users", on_delete=CASCADE, default=1)
-    employeeType = models.CharField(max_length=20, choices=title_choices)
+    employeeType = models.CharField(
+        max_length=20, choices=title_choices, default='1')
 
 
 class Document(models.Model):
@@ -40,8 +41,6 @@ class Document(models.Model):
     documentDetails = models.JSONField()
     modified = models.DateTimeField(auto_now=True)
 
-    # isAdmin = serializers.ReadOnlyField(source="isAdmin.username")
-
     class Meta:
         ordering = ['modified']
 
@@ -54,7 +53,7 @@ class Document(models.Model):
 # class DocumentDetailValues(models.Model):
 #     document_choices = (('1', 'Medicine'),
 #                         ('2', 'Procedure'), ('3', 'Protocol'))
-#     tenantId = models.ForeignKey(
+#     company = models.ForeignKey(
 #         Company, related_name="documentDetails", on_delete=CASCADE)
 #     documentType = models.CharField(max_length=20, choices=document_choices)
 #     documentDetailName = models.CharField(max_length=100)

@@ -62,16 +62,28 @@ class CompanyDocumentList(generics.GenericAPIView):
 
 
 class UserList(generics.ListCreateAPIView):
+    # This grabs all users in the database.
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    # This will grab a specific user whith the ID as PK in the URL
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+
+
+class UserInfo(generics.ListCreateAPIView):
+    # This grabs the user's info for the 'logged in user' Token is required to be sent.
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(username=user)
 
 
 class UserCreate(generics.CreateAPIView):
@@ -150,5 +162,6 @@ class LoginAPI(KnoxLoginView):
         serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)

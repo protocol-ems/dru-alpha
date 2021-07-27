@@ -12,6 +12,7 @@ urlpatterns = [
     path('company-users/<int:pk>/',
          views.CompanyUserList.as_view()),
     path('users/', views.UserList.as_view()),
+    path('users/info/', views.UserInfo.as_view()),
     path('users/<int:pk>/', views.UserDetail.as_view()),
     path('users/updatepassword/', views.UpdatePassword.as_view()),
     path('api/register/', views.RegisterAPI.as_view(), name='register'),
