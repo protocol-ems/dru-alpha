@@ -46,7 +46,7 @@ class CompanyList(generics.ListCreateAPIView):
 class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class CompanyDocumentList(generics.GenericAPIView):
@@ -73,7 +73,7 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly]
 
 
 class UserInfo(generics.ListCreateAPIView):
