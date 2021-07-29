@@ -11,8 +11,8 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Document
-        fields = ['id', 'company', 'documentType',
-                  'documentName', 'documentDetails', 'modified', ]
+        fields = ['id', 'company', 'document_type',
+                  'document_name', 'document_details', 'modified', ]
 
     def create(self, validated_data):
         """
@@ -50,8 +50,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'company', 'employeeType',
-                  'username', 'email', 'password', 'first_name', 'last_name', 'requestedCompany']
+        fields = ['id', 'company', 'employee_type',
+                  'username', 'email', 'password', 'first_name', 'last_name', 'requested_company']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):

@@ -1,8 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import AbstractUser
-from django.db.models.fields import CharField, EmailField, IntegerField
-from rest_framework import serializers
 # Create your models here.
 
 
@@ -30,10 +28,10 @@ class User(AbstractUser):
 
     company = models.ForeignKey(
         Company, related_name="users", on_delete=CASCADE, default=1)
-    employeeType = models.CharField(
+    employee_type = models.CharField(
         max_length=20, choices=title_choices, default=1)
 
-    requestedCompany = models.ForeignKey(
+    requested_company = models.ForeignKey(
         Company, related_name="requested_users", on_delete=CASCADE, default=1)
 
 
@@ -46,8 +44,9 @@ class Document(models.Model):
 
     company = models.ForeignKey(
         Company, related_name="documents", on_delete=CASCADE)
-    documentType = models.CharField(max_length=20, choices=document_choices)
-    documentName = models.CharField(max_length=100)
+    document_type = models.CharField(max_length=20, choices=document_choices)
+    document_name = models.CharField(max_length=100)
+    # I know that documentDetails is camel case and not like the others. However, I couldn't fix quickly. Will come back. Keep getting a weird error.
     documentDetails = models.JSONField()
     modified = models.DateTimeField(auto_now=True)
 
