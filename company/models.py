@@ -10,11 +10,11 @@ class Company(models.Model):
     joined = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True)
     is_active = models.BooleanField(default=False)
-    phone = CharField(max_length=25, blank=True)
-    street_address = CharField(max_length=20, blank=True)
-    zipcode = CharField(max_length=20, blank=True)
-    state = CharField(max_length=20, blank=True)
-    city = CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=25, blank=True)
+    street_address = models.CharField(max_length=20, blank=True)
+    zipcode = models.CharField(max_length=20, blank=True)
+    state = models.CharField(max_length=20, blank=True)
+    city = models.CharField(max_length=100, blank=True)
 
     class Meta:
         ordering = ['joined']
