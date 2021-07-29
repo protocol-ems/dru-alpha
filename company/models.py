@@ -10,8 +10,6 @@ class Company(models.Model):
     joined = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True)
     is_active = models.BooleanField(default=False)
-    main_email = EmailField(max_length=200, default='test@test.com')
-    ap_email = EmailField(max_length=200, default='test@test.com')
     phone = CharField(max_length=25, blank=True)
     street_address = CharField(max_length=20, blank=True)
     zipcode = CharField(max_length=20, blank=True)
@@ -28,7 +26,7 @@ class Company(models.Model):
 class User(AbstractUser):
 
     title_choices = ((1, 'EMT'),
-                     (2, 'Paramedic'), (3, 'RN'), (4, 'Admin'), (5, 'SuperUser'))
+                     (2, 'Paramedic'), (3, 'RN'), (4, 'Admin'), (5, 'SuperUser'), (6, 'Accounting'))
 
     company = models.ForeignKey(
         Company, related_name="users", on_delete=CASCADE, default=1)
