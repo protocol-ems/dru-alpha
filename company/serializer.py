@@ -43,7 +43,7 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = ['id', 'joined', 'name', 'documents', 'users', 'is_active',
-                  'main_email', 'ap_email', 'phone', 'street_address', 'zipcode', 'state', 'city']
+                  'main_email', 'ap_email', 'phone', 'street_address', 'zipcode', 'state', 'city', 'requested_users']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'company', 'employeeType',
-                  'username', 'email', 'password', 'first_name', 'last_name']
+                  'username', 'email', 'password', 'first_name', 'last_name', 'requestedCompany']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):

@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import AbstractUser
-from django.db.models.fields import CharField, EmailField
+from django.db.models.fields import CharField, EmailField, IntegerField
 from rest_framework import serializers
 # Create your models here.
 
@@ -34,6 +34,9 @@ class User(AbstractUser):
         Company, related_name="users", on_delete=CASCADE, default=1)
     employeeType = models.CharField(
         max_length=20, choices=title_choices, default=1)
+
+    requestedCompany = models.ForeignKey(
+        Company, related_name="requested_users", on_delete=CASCADE, default=1)
 
 
 class Document(models.Model):
