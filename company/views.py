@@ -110,6 +110,18 @@ class CompanyUserList(generics.GenericAPIView):
 
         return Response(serializers.data)
 
+class CompanyWaitList(generics.GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        users = User.objects.filter(requested_company=pk)
+        serializers = UserSerializer(users, many=True)
+
+        return Response(serializers.data)
+
+
 
 class UpdatePassword(generics.GenericAPIView):
     """
