@@ -46,7 +46,7 @@ class Document(models.Model):
         Company, related_name="documents", on_delete=CASCADE)
     document_type = models.CharField(max_length=20, choices=document_choices)
     document_name = models.CharField(max_length=100)
-    # I know that documentDetails is camel case and not like the others. However, I couldn't fix quickly. Will come back. Keep getting a weird error.
+    # I know that documentDetails is camelCase and not like the others. However, I couldn't fix quickly. Will come back. Keep getting a weird error.
     documentDetails = models.JSONField()
     modified = models.DateTimeField(auto_now=True)
 
@@ -57,18 +57,16 @@ class Document(models.Model):
         return self.documentName
 
 
-# I need to work on making the choices for each document standardized. I believe the below code will work.
+class DocumentHeader(models.Model):
+    document_choices = ((1, 'Medicine'),
+                        (2, 'Procedure'), (3, 'Protocol'))
+    company = models.ForeignKey(
+        Company, related_name="document_headers", on_delete=CASCADE)
+    document_type = models.CharField(max_length=20, choices=document_choices)
+    document_detail_name = models.CharField(max_length=100)
 
-# class DocumentDetailValues(models.Model):
-#     document_choices = (('1', 'Medicine'),
-#                         ('2', 'Procedure'), ('3', 'Protocol'))
-#     company = models.ForeignKey(
-#         Company, related_name="documentDetails", on_delete=CASCADE)
-#     documentType = models.CharField(max_length=20, choices=document_choices)
-#     documentDetailName = models.CharField(max_length=100)
+    class Meta:
+        ordering = ['document_detail_name']
 
-#     class Meta:
-#         ordering = ['documentDetailName']
-
-#     def __str__(self):
-#         return self.documentDetailName
+    def __str__(self):
+        return self.document_detail_name

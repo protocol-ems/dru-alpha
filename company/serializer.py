@@ -1,7 +1,7 @@
 from django.db.models.query import QuerySet
 from django.views.decorators.csrf import requires_csrf_token
 from rest_framework import serializers
-from .models import Company, Document, User
+from .models import Company, Document, User, DocumentHeader
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -24,10 +24,10 @@ class DocumentSerializer(serializers.ModelSerializer):
         """
         Update and return an existing `Document` instance, given the validated data.
         """
-        instance.documentName = validated_data.get(
-            'documentName', instance.documentName)
-        instance.documentDetails = validated_data.get(
-            'documentDetails', instance.documentDetails)
+        instance.document_name = validated_data.get(
+            'document_name', instance.document_name)
+        instance.document_details = validated_data.get(
+            'document_details', instance.document_details)
         instance.save()
         return instance
 
@@ -40,10 +40,13 @@ class CompanySerializer(serializers.ModelSerializer):
     users = serializers.PrimaryKeyRelatedField(
         many=True, queryset=User.objects.all())
 
+    document_headers = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=DocumentHeader.objects.all())
+
     class Meta:
         model = Company
         fields = ['id', 'joined', 'name', 'documents', 'users', 'is_active',
-                  'phone', 'street_address', 'zipcode', 'state', 'city', 'requested_users']
+                  'phone', 'street_address', 'zipcode', 'state', 'city', 'requested_users', 'document_headers']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -68,3 +71,22 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate_new_password(self, value):
         validate_password(value)
         return value
+
+
+class DocumentHeaderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DocumentHeader
+        fields = ['document_type', 'document_detail_name', 'company']
+
+    def create(self, validated_data):
+        return DocumentHeader.objects.create(**validated_data)
+
+    #     """
+    #     Create and return a new `DocumentHeader` instance, given the validated data.
+    #     """
+
+    #     documentHeader = super(DocumentHeaderSerializer,
+    #                            self).create(validated_data)
+    #     documentHeader.save()
+    #     return documentHeader

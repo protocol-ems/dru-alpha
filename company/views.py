@@ -1,19 +1,16 @@
 from knox.views import LoginView as KnoxLoginView
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework import permissions
-from django.contrib.auth import login
 from knox.models import AuthToken
-from rest_framework import generics, permissions
-from os import stat
-from django.core import mail
-from django.shortcuts import render
-from rest_framework import generics, permissions, serializers, status
-from .models import Document, Company, User
-from .serializer import DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from django.contrib.auth import login
+from rest_framework import generics, permissions, status
+from .models import Document, Company, User, DocumentHeader
+from .serializer import DocumentHeaderSerializer, DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer
 from .permissions import IsAdminOrReadOnly
 from rest_framework.response import Response
+from rest_framework.authentication import BasicAuthentication
 from .emails import sendEmail
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from django.core import mail
+from django.shortcuts import render
 # Create your views here.
 
 
@@ -35,6 +32,32 @@ class DocumentDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DocumentSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+
+
+class DocumentHeaderList(generics.ListCreateAPIView):
+    queryset = DocumentHeader.objects.all()
+    serializer_class = DocumentHeaderSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]
+
+
+class DocumentHeaderDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DocumentHeader.objects.all()
+    serializer_class = DocumentHeaderSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+
+
+class CompanyDocumentHeaderList(generics.GenericAPIView):
+    queryset = Company.objects.all()
+    serializer_class = DocumentHeaderSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        documentHeaders = DocumentHeader.objects.filter(company=pk)
+        serializers = DocumentHeaderSerializer(documentHeaders, many=True)
+
+        return Response(serializers.data)
 
 
 class CompanyList(generics.ListCreateAPIView):
@@ -110,6 +133,7 @@ class CompanyUserList(generics.GenericAPIView):
 
         return Response(serializers.data)
 
+
 class CompanyWaitList(generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -120,7 +144,6 @@ class CompanyWaitList(generics.GenericAPIView):
         serializers = UserSerializer(users, many=True)
 
         return Response(serializers.data)
-
 
 
 class UpdatePassword(generics.GenericAPIView):
