@@ -64,9 +64,10 @@ class DocumentHeader(models.Model):
         Company, related_name="document_headers", on_delete=CASCADE)
     document_type = models.CharField(max_length=20, choices=document_choices)
     document_detail_name = models.CharField(max_length=100)
+    position = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ['document_detail_name']
+        ordering = ['position']
 
     def __str__(self):
         return self.document_detail_name

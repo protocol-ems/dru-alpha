@@ -77,7 +77,8 @@ class DocumentHeaderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DocumentHeader
-        fields = ['id', 'document_type', 'document_detail_name', 'company']
+        fields = ['id', 'document_type',
+                  'document_detail_name', 'company', 'position']
 
     def create(self, validated_data):
         return DocumentHeader.objects.create(**validated_data)

@@ -18,7 +18,7 @@ class DocumentList(generics.ListCreateAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
 
@@ -31,7 +31,7 @@ class DocumentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly]
 
 
 class DocumentHeaderList(generics.ListCreateAPIView):
@@ -45,7 +45,7 @@ class DocumentHeaderDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DocumentHeader.objects.all()
     serializer_class = DocumentHeaderSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly]
 
 
 class CompanyDocumentHeaderList(generics.GenericAPIView):
