@@ -12,7 +12,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = ['id', 'company', 'document_type',
-                  'document_name', 'document_details', 'modified', ]
+                  'document_name', 'documentDetails', 'modified', ]
 
     def create(self, validated_data):
         """
