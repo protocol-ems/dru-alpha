@@ -13,8 +13,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 from rest_framework.settings import api_settings
+import environ
 import os
 db_password = os.environ.get('DB_PASSWORD')
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=+%fe=f=_nkgaz1gk7@ghcgu5+ck7x-^qb5zyy(srtm%e%*sj7'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -89,7 +93,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'protocol-alpha',
         'CLIENT': {
-            'host': 'mongodb+srv://admin:INlVCXrhazgeBL9m@cluster0.utmv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+            'host': env('DATABASE_LINK'),
         }
     }
 }
