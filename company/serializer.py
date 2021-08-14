@@ -1,6 +1,7 @@
 from django.db.models.query import QuerySet
 from django.views.decorators.csrf import requires_csrf_token
 from rest_framework import serializers
+from rest_framework.fields import ChoiceField
 from .models import Company, Document, User, DocumentHeader
 from django.contrib.auth.password_validation import validate_password
 
@@ -53,6 +54,8 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 
+    # employee_type = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = ['id', 'company', 'employee_type',
@@ -64,6 +67,9 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    # def get_employee_type(self, obj):
+    #     return obj.get_employee_type_display()
 
 
 class ChangePasswordSerializer(serializers.Serializer):

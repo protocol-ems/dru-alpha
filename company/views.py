@@ -88,7 +88,7 @@ class UserList(generics.ListCreateAPIView):
     # This grabs all users in the database.
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -28,6 +28,8 @@ class User(AbstractUser):
 
     company = models.ForeignKey(
         Company, related_name="users", on_delete=CASCADE, default=1)
+    # make this an integrefield
+    # need to rework the employee_type serializer to make it return the choices field not the integer
     employee_type = models.CharField(
         max_length=20, choices=title_choices, default=1)
 
