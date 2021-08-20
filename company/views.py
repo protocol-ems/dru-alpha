@@ -2,7 +2,7 @@ from knox.views import LoginView as KnoxLoginView
 from knox.models import AuthToken
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import login
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, parsers
 from .models import Document, Company, User, DocumentHeader
 from .serializer import DocumentHeaderSerializer, DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer
 from .permissions import IsAdminOrReadOnly
@@ -20,11 +20,25 @@ class DocumentList(generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
+    parser_classes = [parsers.MultiPartParser]
 
-        serializer.save(company=self.request.user.company)
+    # def perform_create(self, serializer):
 
-        # sendEmail()
+    #     serializer.save(company=self.request.user.company)
+
+    # def post(self, request, *args, **kwargs):
+    #     company = request.data['company']
+    #     document_type = request.data['document_type']
+    #     document_name = request.data['document_name']
+    #     documentDetails = request.data['documentDetails']
+    #     table_data = request.data['table_data']
+    #     flow_data = request.data['flow_data']
+    #     image_one = request.data['image_one']
+
+    #     Document.objects.create(company=company, document_type=document_type, document_name=document_name,
+    #                             documentDetails=documentDetails, table_data=table_data, flow_data=flow_data, image_one=image_one)
+
+    #     # sendEmail()
 
 
 class DocumentDetail(generics.RetrieveUpdateDestroyAPIView):

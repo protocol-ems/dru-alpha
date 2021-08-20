@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 from knox import views as knox_views
+
 urlpatterns = [
     path('documents/', views.DocumentList.as_view()),
     path('documents/<int:pk>/', views.DocumentDetail.as_view()),

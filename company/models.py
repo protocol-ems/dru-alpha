@@ -38,6 +38,8 @@ class User(AbstractUser):
 
 
 class Document(models.Model):
+    def upload_path(instance, filename):
+        return '/'.join(['images', str(instance.company), str(instance.document_name), filename])
 
     def table_default():
         return {"columns": [], "rows": [], "table_description": ""}
@@ -47,8 +49,8 @@ class Document(models.Model):
 
     # NEED TO ADD TAGLINE - OR SOMETIHNG THAT WOULD SHOW UP IN 'NEWS FEED'
 
-    document_choices = ((1, 'Medicine'),
-                        (2, 'Procedure'), (3, 'Protocol'))
+    document_choices = (("1", 'Medicine'),
+                        ("2", 'Procedure'), ("3", 'Protocol'))
 
     company = models.ForeignKey(
         Company, related_name="documents", on_delete=CASCADE)
@@ -59,12 +61,13 @@ class Document(models.Model):
     table_data = models.JSONField(default=table_default)
     flow_data = models.JSONField(default=flow_default)
     modified = models.DateTimeField(auto_now=True)
+    image_one = models.ImageField(blank=True, null=True, upload_to=upload_path)
 
     class Meta:
         ordering = ['modified']
 
     def __str__(self):
-        return self.documentName
+        return self.document_name
 
 
 class DocumentHeader(models.Model):
