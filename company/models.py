@@ -42,6 +42,9 @@ class Document(models.Model):
     def table_default():
         return {"columns": [], "rows": [], "table_description": ""}
 
+    def flow_default():
+        return {"flow_data": []}
+
     # NEED TO ADD TAGLINE - OR SOMETIHNG THAT WOULD SHOW UP IN 'NEWS FEED'
 
     document_choices = ((1, 'Medicine'),
@@ -54,6 +57,7 @@ class Document(models.Model):
     # I know that documentDetails is camelCase and not like the others. However, I couldn't fix quickly. Will come back. Keep getting a weird error.
     documentDetails = models.JSONField()
     table_data = models.JSONField(default=table_default)
+    flow_data = models.JSONField(default=flow_default)
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
