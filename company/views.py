@@ -2,7 +2,7 @@ from knox.views import LoginView as KnoxLoginView
 from knox.models import AuthToken
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import login
-from rest_framework import generics, permissions, status, parsers
+from rest_framework import generics, permissions, serializers, status
 from .models import Document, Company, User, DocumentHeader
 from .serializer import DocumentHeaderSerializer, DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer
 from .permissions import IsAdminOrReadOnly
@@ -11,6 +11,8 @@ from rest_framework.authentication import BasicAuthentication
 from .emails import sendEmail
 from django.core import mail
 from django.shortcuts import render
+
+
 # Create your views here.
 
 
@@ -20,11 +22,9 @@ class DocumentList(generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly]
 
-    parser_classes = [parsers.MultiPartParser]
-
     # def perform_create(self, serializer):
 
-    #     serializer.save(company=self.request.user.company)
+    # serializer.save(company=self.request.user.company)
 
     # def post(self, request, *args, **kwargs):
     #     company = request.data['company']
@@ -35,9 +35,14 @@ class DocumentList(generics.ListCreateAPIView):
     #     flow_data = request.data['flow_data']
     #     image_one = request.data['image_one']
 
-    #     Document.objects.create(company=company, document_type=document_type, document_name=document_name,
-    #                             documentDetails=documentDetails, table_data=table_data, flow_data=flow_data, image_one=image_one)
-
+    #     docu = Document.objects.create(company=self.request.user.company, document_type=document_type, document_name=document_name,
+    #                                    documentDetails=documentDetails, table_data=table_data, flow_data=flow_data, image_one=image_one)
+    #     print(docu)
+    #     serializer = DocumentSerializer(data=docu)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     #     # sendEmail()
 
 
