@@ -5,7 +5,6 @@ from django.contrib.auth import login
 from rest_framework import generics, permissions, serializers, status
 from .models import Document, Company, User, DocumentHeader
 from .serializer import DocumentHeaderSerializer, DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer
-from .permissions import IsAdminOrReadOnly
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
 from .emails import sendEmail
@@ -22,9 +21,8 @@ class DocumentList(generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly]
 
-    # def perform_create(self, serializer):
-
-    # serializer.save(company=self.request.user.company)
+    def perform_create(self, serializer):
+        serializer.save(company=self.request.user.company)
 
     # def post(self, request, *args, **kwargs):
     #     company = request.data['company']

@@ -38,9 +38,11 @@ class User(AbstractUser):
 
 
 class Document(models.Model):
-    def upload_path(instance, filename):
-        return '/'.join(['images', str(instance.company), str(instance.document_name), filename])
-
+    # Hiding the imageField for now. Will do a different way.
+    # images need to be deleted on cascade. I don't believe this is true at the moment 8/23
+    # def upload_path(instance, filename):
+    #     return '/'.join(['images', str(instance.company), str(instance.document_name), filename])
+    # image_one = models.ImageField(blank=True, null=True, upload_to=upload_path)
     def table_default():
         return {"columns": [], "rows": [], "table_description": ""}
 
@@ -61,7 +63,6 @@ class Document(models.Model):
     table_data = models.JSONField(default=table_default)
     flow_data = models.JSONField(default=flow_default)
     modified = models.DateTimeField(auto_now=True)
-    image_one = models.ImageField(blank=True, null=True, upload_to=upload_path)
 
     class Meta:
         ordering = ['modified']

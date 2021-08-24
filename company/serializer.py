@@ -1,5 +1,4 @@
-from django.db.models.query import QuerySet
-from django.views.decorators.csrf import requires_csrf_token
+
 from rest_framework import serializers
 from rest_framework.fields import ChoiceField
 from .models import Company, Document, User, DocumentHeader
@@ -13,7 +12,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = ['id', 'company', 'document_type',
-                  'document_name', 'documentDetails', 'modified', 'table_data', 'flow_data', 'image_one']
+                  'document_name', 'documentDetails', 'modified', 'table_data', 'flow_data']
 
     def create(self, validated_data):
         """
@@ -33,6 +32,7 @@ class DocumentSerializer(serializers.ModelSerializer):
             'table_data', instance.table_data)
         instance.flow_data = validated_data.get(
             'flow_data', instance.flow_data)
+
         instance.save()
         return instance
 
