@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from rest_framework.fields import ChoiceField
-from .models import Company, Document, User, DocumentHeader
+from .models import Company, Document, User, DocumentHeader, DocumentImage
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -9,10 +9,15 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     company = serializers.ReadOnlyField(source='company.name')
 
+    document_images = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=DocumentImage.objects.all())
+
     class Meta:
         model = Document
         fields = ['id', 'company', 'document_type',
-                  'document_name', 'documentDetails', 'modified', 'table_data', 'flow_data']
+                  'document_name', 'documentDetails', 'modified', 'table_data', 'flow_data', 'document_images']
+        # extra_kwargs = {"document_name": {"error_messages": {
+        #     "required": "Please name the Document"}}}
 
     def create(self, validated_data):
         """
@@ -48,10 +53,13 @@ class CompanySerializer(serializers.ModelSerializer):
     document_headers = serializers.PrimaryKeyRelatedField(
         many=True, queryset=DocumentHeader.objects.all())
 
+    company_images = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=DocumentImage.objects.all())
+
     class Meta:
         model = Company
         fields = ['id', 'joined', 'name', 'documents', 'users', 'is_active',
-                  'phone', 'street_address', 'zipcode', 'state', 'city', 'requested_users', 'document_headers']
+                  'phone', 'street_address', 'zipcode', 'state', 'city', 'requested_users', 'document_headers', 'company_images']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -92,3 +100,9 @@ class DocumentHeaderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return DocumentHeader.objects.create(**validated_data)
+
+
+class DocumentImageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = DocumentImage
+        fields = ['image', 'document', 'company']

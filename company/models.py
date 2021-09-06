@@ -65,7 +65,7 @@ class Document(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['modified']
+        ordering = ['-modified']
 
     def __str__(self):
         return self.document_name
@@ -85,3 +85,17 @@ class DocumentHeader(models.Model):
 
     def __str__(self):
         return self.document_detail_name
+
+
+class DocumentImage(models.Model):
+
+    def upload_path(instance, filename):
+        return '/'.join(['images', str(instance.company), str(instance.document), filename])
+
+    image = models.ImageField(upload_to=upload_path)
+
+    document = models.ForeignKey(
+        Document, related_name="document_images", on_delete=CASCADE)
+
+    company = models.ForeignKey(
+        Company, related_name="company_images", on_delete=CASCADE, default=1)

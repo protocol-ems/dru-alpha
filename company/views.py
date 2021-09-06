@@ -1,12 +1,14 @@
+import re
 from knox.views import LoginView as KnoxLoginView
 from knox.models import AuthToken
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import login
 from rest_framework import generics, permissions, serializers, status
-from .models import Document, Company, User, DocumentHeader
-from .serializer import DocumentHeaderSerializer, DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer
+from .models import Document, Company, User, DocumentHeader, DocumentImage
+from .serializer import DocumentHeaderSerializer, DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer, DocumentImageSerializer
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
+from django.http import HttpResponse
 from .emails import sendEmail
 from django.core import mail
 from django.shortcuts import render
@@ -217,3 +219,20 @@ class LoginAPI(KnoxLoginView):
 
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
+
+
+class ImageViewSet(generics.CreateAPIView):
+    queryset = DocumentImage.objects.all()
+    serializer_class = DocumentImageSerializer
+
+    def post(self, request, *args, **kwargs):
+        image = request.data['image']
+        document = request.data['document']
+        company = request.data['company']
+
+# serializer = DocumentSerializer(data=docu)
+        documentSerialized = Document.objects.get(id=document)
+        companySerialized = Company.objects.get(id=company)
+        DocumentImage.objects.create(
+            image=image, document=documentSerialized, company=companySerialized)
+        return HttpResponse({'message': 'Image added'}, status=200)
