@@ -102,7 +102,10 @@ class DocumentHeaderSerializer(serializers.ModelSerializer):
         return DocumentHeader.objects.create(**validated_data)
 
 
-class DocumentImageSerializer(serializers.HyperlinkedModelSerializer):
+class DocumentImageSerializer(serializers.ModelSerializer):
+    # url = serializers.HyperlinkedIdentityField(
+    #     view_name="core:document-detail")
+
     class Meta:
         model = DocumentImage
         fields = ['image', 'document', 'company']

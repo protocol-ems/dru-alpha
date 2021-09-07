@@ -25,7 +25,8 @@ urlpatterns = [
     path('api/login/', views.LoginAPI.as_view(), name='login'),
     path('api/logout/', knox_views.LogoutView.as_view(), name='logout'),
     path('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
-    path('images/', views.ImageViewSet.as_view())
+    path('images/', views.ImageViewSet.as_view()),
+    path('document-images/<int:pk>/', views.DocumentImageDetail.as_view())
 
 ]
 

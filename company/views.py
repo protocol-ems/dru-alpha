@@ -221,7 +221,7 @@ class LoginAPI(KnoxLoginView):
         return super(LoginAPI, self).post(request, format=None)
 
 
-class ImageViewSet(generics.CreateAPIView):
+class ImageViewSet(generics.ListCreateAPIView):
     queryset = DocumentImage.objects.all()
     serializer_class = DocumentImageSerializer
 
@@ -230,9 +230,24 @@ class ImageViewSet(generics.CreateAPIView):
         document = request.data['document']
         company = request.data['company']
 
-# serializer = DocumentSerializer(data=docu)
         documentSerialized = Document.objects.get(id=document)
         companySerialized = Company.objects.get(id=company)
         DocumentImage.objects.create(
             image=image, document=documentSerialized, company=companySerialized)
         return HttpResponse({'message': 'Image added'}, status=200)
+
+
+class DocumentImageDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = DocumentImage.objects.all()
+    serializer_class = DocumentImageSerializer
+
+    def get(self, request, pk):
+        # serializer_context = {
+        #     'request': Request(request),
+        # }
+        images = DocumentImage.objects.filter(document=pk)
+        serializers = DocumentImageSerializer(
+            images, many=True, context={'request': request})
+
+        return Response(serializers.data)
