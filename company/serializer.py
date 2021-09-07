@@ -108,4 +108,4 @@ class DocumentImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DocumentImage
-        fields = ['image', 'document', 'company']
+        fields = ['image', 'document', 'company', 'id']

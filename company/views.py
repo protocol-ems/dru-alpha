@@ -241,13 +241,24 @@ class DocumentImageDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = DocumentImage.objects.all()
     serializer_class = DocumentImageSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, pk):
-        # serializer_context = {
-        #     'request': Request(request),
-        # }
         images = DocumentImage.objects.filter(document=pk)
         serializers = DocumentImageSerializer(
             images, many=True, context={'request': request})
+        return Response(serializers.data)
 
+
+class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DocumentImage.objects.all()
+    serializer_class = DocumentImageSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        images = DocumentImage.objects.filter(id=pk)
+        serializers = DocumentImageSerializer(
+            images, many=True, context={'request': request})
         return Response(serializers.data)

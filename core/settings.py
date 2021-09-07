@@ -210,3 +210,13 @@ REST_KNOX = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
 ]
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS')
+
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS')
+
+AWS_STORAGE_BUCKET_NAME = 'ourprotocol-server-1'
+
+AWS_QUERYSTRING_AUTH = False
