@@ -10,7 +10,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     company = serializers.ReadOnlyField(source='company.name')
 
     document_images = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=DocumentImage.objects.all())
+        many=True, queryset=DocumentImage.objects.all(), required=False)
 
     class Meta:
         model = Document
@@ -54,7 +54,7 @@ class CompanySerializer(serializers.ModelSerializer):
         many=True, queryset=DocumentHeader.objects.all())
 
     company_images = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=DocumentImage.objects.all())
+        many=True, queryset=DocumentImage.objects.all(), required=False)
 
     class Meta:
         model = Company

@@ -13,6 +13,9 @@ from .emails import sendEmail
 from django.core import mail
 from django.shortcuts import render
 
+import boto3
+from django.conf import settings
+from django.http import Http404
 
 # Create your views here.
 
@@ -24,26 +27,8 @@ class DocumentList(generics.ListCreateAPIView):
         permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
+
         serializer.save(company=self.request.user.company)
-
-    # def post(self, request, *args, **kwargs):
-    #     company = request.data['company']
-    #     document_type = request.data['document_type']
-    #     document_name = request.data['document_name']
-    #     documentDetails = request.data['documentDetails']
-    #     table_data = request.data['table_data']
-    #     flow_data = request.data['flow_data']
-    #     image_one = request.data['image_one']
-
-    #     docu = Document.objects.create(company=self.request.user.company, document_type=document_type, document_name=document_name,
-    #                                    documentDetails=documentDetails, table_data=table_data, flow_data=flow_data, image_one=image_one)
-    #     print(docu)
-    #     serializer = DocumentSerializer(data=docu)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    #     # sendEmail()
 
 
 class DocumentDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -262,3 +247,14 @@ class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
         serializers = DocumentImageSerializer(
             images, many=True, context={'request': request})
         return Response(serializers.data)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+        except Http404:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        # s3 = boto3.client('s3')
+        # s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+        #                  Key=f"media/{item.file.name}")
