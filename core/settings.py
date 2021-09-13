@@ -220,3 +220,7 @@ AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS')
 AWS_STORAGE_BUCKET_NAME = 'ourprotocol-server-1'
 
 AWS_QUERYSTRING_AUTH = False
+
+# stripe test key
+
+STRIPE_TEST_KEY = env('STRIPE_TEST_KEY')

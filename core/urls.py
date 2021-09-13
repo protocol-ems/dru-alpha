@@ -25,7 +25,8 @@ from django.conf import settings
 urlpatterns = [
     path('', include('company.urls')),
     path('admin/', admin.site.urls),
-    path(r'api/auth/', include('knox.urls'))
+    path(r'api/auth/', include('knox.urls')),
+    path('payments/', include('payments.urls'))
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
