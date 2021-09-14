@@ -1,10 +1,12 @@
 from django.db import models
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import SET_NULL, CASCADE, SET_DEFAULT
 from django.contrib.auth.models import AbstractUser
+from payments.models import Subscription
 # Create your models here.
 
 
 class Company(models.Model):
+
     joined = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True)
     is_active = models.BooleanField(default=False)
@@ -13,6 +15,9 @@ class Company(models.Model):
     zipcode = models.CharField(max_length=20, blank=True)
     state = models.CharField(max_length=20, blank=True)
     city = models.CharField(max_length=100, blank=True)
+    stripe_cus_id = models.CharField(max_length=100, blank=True)
+    subscription = models.ForeignKey(
+        Subscription, related_name="company", on_delete=SET_NULL, blank=True, null=True)
 
     class Meta:
         ordering = ['joined']
@@ -27,14 +32,14 @@ class User(AbstractUser):
                      (2, 'Paramedic'), (3, 'RN'), (4, 'Admin'), (5, 'SuperUser'), (6, 'Accounting'))
 
     company = models.ForeignKey(
-        Company, related_name="users", on_delete=CASCADE, default=1)
+        Company, related_name="users", on_delete=SET_DEFAULT, default=1)
     # make this an integrefield
     # need to rework the employee_type serializer to make it return the choices field not the integer
     employee_type = models.CharField(
         max_length=20, choices=title_choices, default=1)
 
     requested_company = models.ForeignKey(
-        Company, related_name="requested_users", on_delete=CASCADE, default=1)
+        Company, related_name="requested_users", on_delete=SET_DEFAULT, default=1)
 
 
 class Document(models.Model):

@@ -59,7 +59,7 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = ['id', 'joined', 'name', 'documents', 'users', 'is_active',
-                  'phone', 'street_address', 'zipcode', 'state', 'city', 'requested_users', 'document_headers', 'company_images']
+                  'phone', 'street_address', 'zipcode', 'state', 'city', 'requested_users', 'document_headers', 'company_images', 'stripe_cus_id', 'subscription']
 
 
 class UserSerializer(serializers.ModelSerializer):

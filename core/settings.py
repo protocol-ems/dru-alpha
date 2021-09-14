@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'knox',
     'corsheaders',
     'company.apps.CompanyConfig',
+    'payments'
 
 ]
 
