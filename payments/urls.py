@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^save-stripe-info/$', views.save_stripe_info),
     url(r'customer-info/$', views.customer_info),
     url(r'subscription-info/$', views.subscription_info),
-    path('subscriptions/', views.SubscriptionList.as_view())
+    path('subscriptions/', views.SubscriptionList.as_view()),
+    path('subscription-detail/<int:pk>/',
+         views.SubscriptionDetail.as_view())
 
 ]

@@ -132,3 +132,9 @@ class SubscriptionList(generics.ListAPIView):
     serializer_class = SubscriptionSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly]
+
+
+class SubscriptionDetail(generics.RetrieveAPIView):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
