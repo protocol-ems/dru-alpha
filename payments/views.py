@@ -96,6 +96,7 @@ def save_stripe_info(request):
     company.stripe_cus_id = customer['id']
     company.is_active = True
     company.subscription = subscription
+    company.stripe_sub_id = subscription_info['id']
     company.save()
 
     return Response(status=status.HTTP_200_OK,
@@ -125,6 +126,40 @@ def subscription_info(request):
     subscription_info = stripe.Subscription.retrieve(id=subscription_id)
 
     return Response(status=status.HTTP_200_OK, data={'subscription_info': subscription_info})
+
+
+@api_view(["POST"])
+def change_subscription(request):
+    data = request.data
+    subscription_type_id = data['subscription_type_id']
+    stripe_cus_id = data['stripe_cus_id']
+    stripe_sub_id = data['stripe_sub_id']
+    subscription = Subscription.objects.get(id=subscription_type_id)
+    subscription_seralizer = SubscriptionSerializer(subscription)
+    subscription_price_id = subscription_seralizer.data['stripe_sub_id']
+
+    print(subscription_price_id)
+
+    customer_info = stripe.Customer.retrieve(id=stripe_cus_id)
+
+    subscription_info = stripe.Subscription.retrieve(id=stripe_sub_id)
+
+    new_subscription_info = stripe.Subscription.modify(subscription_info.id, items=[
+        {
+            'id': subscription_info['items']['data'][0].id,
+            'price': subscription_price_id
+        }
+    ])
+
+    company = Company.objects.get(id=data['company'])
+
+    company.subscription = subscription
+
+    company.save()
+
+    print(new_subscription_info)
+
+    return Response(status=status.HTTP_200_OK, data={'subscription_info': subscription_price_id})
 
 
 class SubscriptionList(generics.ListAPIView):

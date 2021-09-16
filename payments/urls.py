@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'subscription-info/$', views.subscription_info),
     path('subscriptions/', views.SubscriptionList.as_view()),
     path('subscription-detail/<int:pk>/',
-         views.SubscriptionDetail.as_view())
+         views.SubscriptionDetail.as_view()),
+    url(r'change-subscription/$', views.change_subscription)
 
 ]

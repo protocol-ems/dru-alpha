@@ -16,6 +16,7 @@ class Company(models.Model):
     state = models.CharField(max_length=20, blank=True)
     city = models.CharField(max_length=100, blank=True)
     stripe_cus_id = models.CharField(max_length=100, blank=True)
+    stripe_sub_id = models.CharField(max_length=100, blank=True)
     subscription = models.ForeignKey(
         Subscription, related_name="company", on_delete=SET_NULL, blank=True, null=True)
 
