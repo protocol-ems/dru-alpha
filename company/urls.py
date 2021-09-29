@@ -17,6 +17,7 @@ urlpatterns = [
     path('company-users/<int:pk>/',
          views.CompanyUserList.as_view()),
     path('company-waitlist/<int:pk>/', views.CompanyWaitList.as_view()),
+    path('active-companies/', views.ActiveCompanyList.as_view()),
     path('users/', views.UserList.as_view()),
     path('users/info/', views.UserInfo.as_view()),
     path('users/<int:pk>/', views.UserDetail.as_view()),

@@ -70,6 +70,12 @@ class CompanyList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
+class ActiveCompanyList(generics.ListAPIView):
+    queryset = Company.objects.all().filter(is_active__in=[True])
+    serializer_class = CompanySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
 class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
