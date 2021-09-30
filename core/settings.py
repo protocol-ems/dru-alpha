@@ -15,7 +15,7 @@ from datetime import timedelta
 from rest_framework.settings import api_settings
 import environ
 import os
-db_password = os.environ.get('DB_PASSWORD')
+# db_password = os.environ.get('DB_PASSWORD')
 
 env = environ.Env()
 environ.Env.read_env()
@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
@@ -95,7 +95,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'protocol-alpha',
         'CLIENT': {
-            'host': env('DATABASE_LINK'),
+            'host': os.getenv('DATABASE_LINK'),
         }
     }
 }
@@ -215,9 +215,9 @@ CORS_ALLOWED_ORIGINS = [
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS')
 
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS')
 
 AWS_STORAGE_BUCKET_NAME = 'ourprotocol-server-1'
 
@@ -225,4 +225,4 @@ AWS_QUERYSTRING_AUTH = False
 
 # stripe test key
 
-STRIPE_TEST_KEY = env('STRIPE_TEST_KEY')
+STRIPE_TEST_KEY = os.getenv('STRIPE_TEST_KEY')
