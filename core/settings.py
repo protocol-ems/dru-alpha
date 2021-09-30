@@ -95,11 +95,10 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'protocol-alpha',
         'CLIENT': {
-            'host': os.getenv('DATABASE_LINK'),
+            'host': 'mongodb+srv://' + os.getenv('DATABASE_USERNAME') + ':' + os.getenv('DATABASE_PASSWORD' + '@cluster0.utmv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'),
         }
     }
 }
-# INlVCXrhazgeBL9m
 
 
 # Password validation
