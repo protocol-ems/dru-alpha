@@ -95,7 +95,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'protocol-alpha',
         'CLIENT': {
-            'host': 'mongodb+srv://' + os.getenv('DATABASE_USERNAME') + ':' + os.getenv('DATABASE_PASSWORD') + '@cluster0.utmv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+            'host': 'mongodb+srv://' + str(os.getenv('DATABASE_USERNAME')) + ':' + str(os.getenv('DATABASE_PASSWORD')) + '@cluster0.utmv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
         }
     }
 }
