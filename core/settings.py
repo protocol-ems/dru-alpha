@@ -96,6 +96,9 @@ DATABASES = {
         'NAME': 'protocol-alpha',
         'CLIENT': {
             'host': 'mongodb+srv://digitalocean:8fZFnnnDkU3d7L2K@cluster0.utmv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+            'authSource': "admin",
+            'authMechanism': 'SCRAM-SHA-1'
+
         }
     }
 }
