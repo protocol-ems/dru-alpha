@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from re import T
 from rest_framework.settings import api_settings
 import environ
 import os
@@ -27,11 +28,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+### Production or Not value to determine where to grab env  variables. ##
+
+test_mode = False
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+if test_mode:
+    SECRET_KEY = env('SECRET_KEY')
+else:
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
+if test_mode:
+    DEBUG = True
+else:
+    DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS",
                           "127.0.0.1,localhost").split(",")
@@ -218,14 +229,23 @@ CORS_ALLOWED_ORIGINS = [
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS')
+if test_mode:
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS')
+else:
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS')
 
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS')
+if test_mode:
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS')
+else:
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS')
+
 
 AWS_STORAGE_BUCKET_NAME = 'ourprotocol-server-1'
 
 AWS_QUERYSTRING_AUTH = False
 
 # stripe test key
-
-STRIPE_TEST_KEY = os.getenv('STRIPE_TEST_KEY')
+if test_mode:
+    STRIPE_TEST_KEY = env('STRIPE_TEST_KEY')
+else:
+    STRIPE_TEST_KEY = os.getenv('STRIPE_TEST_KEY')

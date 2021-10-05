@@ -138,8 +138,6 @@ def change_subscription(request):
     subscription_seralizer = SubscriptionSerializer(subscription)
     subscription_price_id = subscription_seralizer.data['stripe_sub_id']
 
-    print(subscription_price_id)
-
     customer_info = stripe.Customer.retrieve(id=stripe_cus_id)
 
     subscription_info = stripe.Subscription.retrieve(id=stripe_sub_id)
@@ -157,8 +155,6 @@ def change_subscription(request):
 
     company.save()
 
-    print(new_subscription_info)
-
     return Response(status=status.HTTP_200_OK, data={'subscription_info': subscription_price_id})
 
 
@@ -173,3 +169,16 @@ class SubscriptionDetail(generics.RetrieveAPIView):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+@api_view(["POST"])
+def cancel_subscription(request):
+    data = request.data
+    stripe_sub_id = data['stripe_sub_id']
+    company = Company.objects.get(id=data['company'])
+
+    company.is_active = False
+    company.save()
+
+    stripe.Subscription.delete(stripe_sub_id)
+    return Response(status=status.HTTP_200_OK, data={})
