@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from stripe.api_resources import payment_method
 from company.serializer import CompanySerializer
 from company.models import Company
 from .models import Subscription
@@ -182,3 +183,28 @@ def cancel_subscription(request):
 
     stripe.Subscription.delete(stripe_sub_id)
     return Response(status=status.HTTP_200_OK, data={})
+
+
+@api_view(["POST"])
+def get_card_information(request):
+    data = request.data
+    payment_method = data["payment_method"]
+
+    stripe_payment_information = stripe.PaymentMethod.retrieve(payment_method)
+
+    return Response(status=status.HTTP_200_OK, data={'payment_information': stripe_payment_information})
+
+
+@api_view(["POST"])
+def change_billing_details(request):
+    data = request.data
+    payment_method_id = data['payment_method_id']
+    customer = data['customer']
+    print(customer)
+    stripe.PaymentMethod.attach(payment_method_id, customer=customer)
+    modified_customer = stripe.Customer.modify(customer,  invoice_settings={
+        'default_payment_method': payment_method_id})
+
+    # stripe.Subscription.modify()
+
+    return Response(status=status.HTTP_200_OK, data={'customer_info': modified_customer})
