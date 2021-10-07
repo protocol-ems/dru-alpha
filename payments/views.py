@@ -200,10 +200,19 @@ def change_billing_details(request):
     data = request.data
     payment_method_id = data['payment_method_id']
     customer = data['customer']
-    print(customer)
+    email = data['email']
+    billing_details = data['billing_details']
+    city = billing_details['address']['city']
+    line1 = billing_details['address']['line1']
+    line2 = billing_details['address']['line2']
+    postal_code = billing_details['address']['postal_code']
+    state = billing_details['address']['state']
+    phone = data['billing_details']['phone']
+    name = data['billing_details']['name']
+
     stripe.PaymentMethod.attach(payment_method_id, customer=customer)
     modified_customer = stripe.Customer.modify(customer,  invoice_settings={
-        'default_payment_method': payment_method_id})
+        'default_payment_method': payment_method_id}, email=email, phone=phone, name=name, address={'city': city, 'line1': line1, 'line2': line2, 'postal_code': postal_code, 'state': state}, shipping={'name': name, 'phone': phone, 'address': {'city': city, 'line1': line1, 'line2': line2, 'postal_code': postal_code, 'state': state}})
 
     # stripe.Subscription.modify()
 
