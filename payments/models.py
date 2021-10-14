@@ -25,6 +25,7 @@ class Subscription(models.Model):
     stripe_sub_id = models.CharField(max_length=100)
     price = models.IntegerField()
     user_max = models.IntegerField()
+    custom_pricing = models.BooleanField(default=False)
     # company = models.ForeignKey(
     #     Company, related_name="Subscription", on_delete=CASCADE)
 
