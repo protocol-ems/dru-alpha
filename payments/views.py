@@ -160,7 +160,16 @@ def change_subscription(request):
 
 
 class SubscriptionList(generics.ListAPIView):
-    queryset = Subscription.objects.all()
+    # This is used on the front end to see Our Generic Pricing. We filter out any custom pricing to avoid exposing it
+    queryset = Subscription.objects.all().filter(custom_pricing__in=[False])
+    serializer_class = SubscriptionSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]
+
+
+class CustomSubscriptionList(generics.ListAPIView):
+    # End point to see all custom subscriptions.
+    queryset = Subscription.objects.all().filter(custom_pricing__in=[True])
     serializer_class = SubscriptionSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly]

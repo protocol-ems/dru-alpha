@@ -10,11 +10,10 @@ urlpatterns = [
     path('subscriptions/', views.SubscriptionList.as_view()),
     path('subscription-detail/<int:pk>/',
          views.SubscriptionDetail.as_view()),
+    path('custom-subscriptions/', views.CustomSubscriptionList.as_view()),
     url(r'change-subscription/$', views.change_subscription),
     url(r'cancel-subscription/$', views.cancel_subscription),
     url(r'card-information/$', views.get_card_information),
     url(r'change-billing-information/$', views.change_billing_details)
-
-
 
 ]
