@@ -14,6 +14,8 @@ urlpatterns = [
     path('company/<int:pk>/', views.CompanyDetail.as_view()),
     path('company-documents/<int:pk>/',
          views.CompanyDocumentList.as_view()),
+    path('company-images/<int:pk>/',
+         views.CompanyImagesList.as_view()),
     path('company-users/<int:pk>/',
          views.CompanyUserList.as_view()),
     path('company-waitlist/<int:pk>/', views.CompanyWaitList.as_view()),

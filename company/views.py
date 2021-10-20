@@ -4,6 +4,7 @@ from knox.models import AuthToken
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import login
 from rest_framework import generics, permissions, serializers, status
+
 from .models import Document, Company, User, DocumentHeader, DocumentImage
 from .serializer import DocumentHeaderSerializer, DocumentSerializer, CompanySerializer, UserSerializer, ChangePasswordSerializer, DocumentImageSerializer
 from rest_framework.response import Response
@@ -90,6 +91,18 @@ class CompanyDocumentList(generics.GenericAPIView):
     def get(self, request, pk):
         documents = Document.objects.filter(company=pk)
         serializers = DocumentSerializer(documents, many=True)
+
+        return Response(serializers.data)
+
+
+class CompanyImagesList(generics.ListAPIView):
+    queryset = Company.objects.all()
+    serializer_class = DocumentImageSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        images = DocumentImage.objects.filter(company=pk)
+        serializers = DocumentImageSerializer(images, many=True)
 
         return Response(serializers.data)
 
