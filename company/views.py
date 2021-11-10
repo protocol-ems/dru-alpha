@@ -76,11 +76,11 @@ class ActiveCompanyList(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
+class CompanyDetail(generics.RetrieveUpdateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsSameCompanyOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly]
 
 
 class CompanyDocumentList(generics.GenericAPIView):
@@ -259,7 +259,7 @@ class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DocumentImage.objects.all()
     serializer_class = DocumentImageSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsSameCompanyOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, pk):
         images = DocumentImage.objects.filter(id=pk)
