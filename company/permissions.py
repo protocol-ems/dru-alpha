@@ -15,3 +15,9 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 
         # Instance must have an attribute named `owner`.
         return obj.company == request.user.company and request.user.isAdmin == True
+
+
+class IsSameCompanyOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        message = "you must be the owner of this document"
+        return obj.company == request.user.company

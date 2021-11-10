@@ -13,8 +13,7 @@ from django.http import HttpResponse
 from .emails import sendEmail
 from django.core import mail
 from django.shortcuts import render
-
-import boto3
+from .permissions import IsSameCompanyOrReadOnly
 from django.conf import settings
 from django.http import Http404
 
@@ -36,7 +35,7 @@ class DocumentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly, IsSameCompanyOrReadOnly]
 
 
 class DocumentHeaderList(generics.ListCreateAPIView):
@@ -50,7 +49,7 @@ class DocumentHeaderDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DocumentHeader.objects.all()
     serializer_class = DocumentHeaderSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly, IsSameCompanyOrReadOnly]
 
 
 class CompanyDocumentHeaderList(generics.GenericAPIView):
@@ -80,7 +79,8 @@ class ActiveCompanyList(generics.ListAPIView):
 class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly, IsSameCompanyOrReadOnly]
 
 
 class CompanyDocumentList(generics.GenericAPIView):
@@ -114,7 +114,7 @@ class UserList(generics.ListCreateAPIView):
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserDetail(generics.RetrieveUpdateAPIView):
     # This will grab a specific user whith the ID as PK in the URL
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -259,7 +259,7 @@ class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DocumentImage.objects.all()
     serializer_class = DocumentImageSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly, IsSameCompanyOrReadOnly]
 
     def get(self, request, pk):
         images = DocumentImage.objects.filter(id=pk)
@@ -274,6 +274,3 @@ class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
         except Http404:
             pass
         return Response(status=status.HTTP_204_NO_CONTENT)
-        # s3 = boto3.client('s3')
-        # s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,
-        #                  Key=f"media/{item.file.name}")

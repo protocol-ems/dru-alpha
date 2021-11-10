@@ -225,7 +225,7 @@ REST_KNOX = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://192.168.1.9:3000",
-    "https://dru-react-bcuri.ondigitalocean.app/"
+    "https://dru-react-bcuri.ondigitalocean.app"
 ]
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
