@@ -42,7 +42,7 @@ else:
 if test_mode:
     DEBUG = True
 else:
-    DEBUG = os.getenv("DEBUG", "False") == "True"
+    DEBUG = False
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS",
                           "127.0.0.1,localhost").split(",")
